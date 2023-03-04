@@ -1,0 +1,42 @@
+service: lambda-esbuild
+
+frameworkVersion: '3'
+
+plugins:
+  # - serverless-esbuild
+  - serverless-offline
+
+provider:
+  name: aws
+  region: sa-east-1
+  runtime: nodejs18.x
+  environment:
+  #   NODE_OPTIONS: '--enable-source-maps'
+
+functions:
+  hello:
+    description: Simple lambda hello example
+    handler: dist/index.handler
+    events:
+      - http:
+          path: hello
+          method: get
+
+custom:
+  serverless-offline:
+    useWorkerThreads: true
+    # useChildProcesses: true
+    # reloadHandler: true
+    debug: true
+    noPrependStageInUrl: true
+    prefix: api/v1
+    host: 0.0.0.0
+    # esbuild:
+    #   bundle: true
+    #   minify: false
+    #   sourcemap: true
+    #   concurrency: 5
+    #   watch: [
+    #     pattern: ['src/**/*.ts'], # match only typescript files in src directory
+    #     ignore: ['.build', 'dist', 'node_modules', '.serverless']
+    #   ]
